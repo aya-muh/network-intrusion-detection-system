@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Network Intrusion Audit Gateway</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Top Enterprise Header -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="brand-section">
+        <span class="brand-department">Department of Cyber Defense &bull; Network Security Operations</span>
+        <h1 class="brand-title">Session Intrusion Audit &amp; Risk Assessment Gateway</h1>
+      </div>
+      <div class="system-status-group">
+        <div class="system-status-item">
+          <span class="status-label">Operational State</span>
+          <span class="status-value"><span class="status-indicator-live"></span>ONLINE &bull; AUDIT READY</span>
+        </div>
+        <div class="system-status-item">
+          <span class="status-label">Inference Engine</span>
+          <span class="status-value">XGBOOST PIPELINE</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Context Sub-Bar -->
+  <div class="context-bar">
+    <div class="context-bar-inner">
+      <span>Specification: NIST SP 800-94 Compliant Inspection Interface</span>
+      <span class="context-tag">CLASSIFICATION: UNCLASSIFIED // INTERNAL AUDIT</span>
+    </div>
+  </div>
+
+  <!-- Main Content Layout -->
+  <main class="main-container">
+
+    <!-- Error Banner -->
+    <div id="errorBanner" class="error-banner"></div>
+
+    <div class="grid-dashboard">
+
+      <!-- LEFT COLUMN: Parameter Input Docket -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-header-title">Session Telemetry Parameters</h2>
+            <p class="panel-header-subtitle">Manual Network Attribute Ingestion Docket</p>
+          </div>
+          <span class="context-tag">INPUT FORM</span>
+        </div>
+
+        <div class="panel-body">
+
+          <!-- Preset Scenarios -->
+          <div class="presets-strip">
+            <span class="presets-label">Audit Scenarios:</span>
+            <button type="button" class="btn-preset" data-preset="normal">Baseline Traffic</button>
+            <button type="button" class="btn-preset btn-preset-danger" data-preset="credential_stuffing">Brute-Force Anomaly</button>
+            <button type="button" class="btn-preset btn-preset-danger" data-preset="icmp_probe">ICMP Reconnaissance</button>
+          </div>
+
+          <form id="auditForm" novalidate>
+
+            <!-- GROUP 1: Network & Transport Layer -->
+            <div class="form-group-section">
+              <div class="section-divider-title">
+                <span>01. Transport &amp; Traffic Metrics</span>
+                <span>شبكة النقل وحزم البيانات</span>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-block">
+                  <label for="network_packet_size" class="input-label">
+                    <span>Network Packet Size</span>
+                    <span class="input-label-ar">حجم حزمة الشبكة</span>
+                  </label>
+                  <input type="number" id="network_packet_size" name="network_packet_size" class="input-control"
+                         value="512" min="0" max="65535" step="1" required>
+                  <p class="input-hint">
+                    Total payload data volume per packet in bytes. Standard range: 64 to 65,535 bytes.
+                    <span class="input-hint-ar">حجم البيانات في حزمة الشبكة بالبايت.</span>
+                  </p>
+                </div>
+
+                <div class="input-block">
+                  <label for="protocol_type" class="input-label">
+                    <span>Protocol Type</span>
+                    <span class="input-label-ar">نوع بروتوكول الاتصال</span>
+                  </label>
+                  <select id="protocol_type" name="protocol_type" class="input-control" required>
+                    <option value="TCP" selected>TCP &mdash; Transmission Control Protocol (Code 0)</option>
+                    <option value="UDP">UDP &mdash; User Datagram Protocol (Code 1)</option>
+                    <option value="ICMP">ICMP &mdash; Internet Control Message Protocol (Code 2)</option>
+                  </select>
+                  <p class="input-hint">
+                    Transport protocol governing session data transfer.
+                    <span class="input-hint-ar">بروتوكول التحكم بالنقل، بيانات المستخدم، أو رسائل التحكم.</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-block">
+                  <label for="session_duration" class="input-label">
+                    <span>Session Duration</span>
+                    <span class="input-label-ar">مدة الجلسة</span>
+                  </label>
+                  <input type="number" id="session_duration" name="session_duration" class="input-control"
+                         value="120" min="0" step="0.1" required>
+                  <p class="input-hint">
+                    Active network connection lifetime in seconds. Standard range: 0.1 to 86,400 s.
+                    <span class="input-hint-ar">المدة الزمنية التي استمر فيها اتصال الشبكة بالثواني.</span>
+                  </p>
+                </div>
+
+                <div class="input-block">
+                  <label for="encryption_used" class="input-label">
+                    <span>Encryption Used</span>
+                    <span class="input-label-ar">نوع التشفير المستخدم</span>
+                  </label>
+                  <select id="encryption_used" name="encryption_used" class="input-control" required>
+                    <option value="AES" selected>AES &mdash; Advanced Encryption Standard (Code 1)</option>
+                    <option value="DES">DES &mdash; Data Encryption Standard [Legacy] (Code 2)</option>
+                    <option value="NONE">NONE &mdash; Unencrypted Plaintext (Code 0)</option>
+                  </select>
+                  <p class="input-hint">
+                    Cryptographic cipher applied during transport. AES is current standard; NONE/DES elevate risk.
+                    <span class="input-hint-ar">نوع التشفير: AES قوي وموصى به، DES قديم وضعيف، NONE غير مشفر.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- GROUP 2: Authentication & Access Metrics -->
+            <div class="form-group-section">
+              <div class="section-divider-title">
+                <span>02. Identity &amp; Authentication Activity</span>
+                <span>المصادقة ومحاولات الدخول</span>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-block">
+                  <label for="login_attempts" class="input-label">
+                    <span>Login Attempts</span>
+                    <span class="input-label-ar">محاولات تسجيل الدخول</span>
+                  </label>
+                  <input type="number" id="login_attempts" name="login_attempts" class="input-control"
+                         value="2" min="0" max="500" step="1" required>
+                  <p class="input-hint">
+                    Total login verification attempts registered during the session.
+                    <span class="input-hint-ar">إجمالي عدد محاولات تسجيل الدخول أثناء الجلسة.</span>
+                  </p>
+                </div>
+
+                <div class="input-block">
+                  <label for="failed_logins" class="input-label">
+                    <span>Failed Logins</span>
+                    <span class="input-label-ar">المحاولات الفاشلة</span>
+                  </label>
+                  <input type="number" id="failed_logins" name="failed_logins" class="input-control"
+                         value="0" min="0" max="500" step="1" required>
+                  <p class="input-hint">
+                    Unsuccessful authentication challenges encountered.
+                    <span class="input-hint-ar">عدد محاولات تسجيل الدخول التي لم تنجح.</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Automated Feature Engineering Live Indicator -->
+              <div class="calculated-feature-card">
+                <div>
+                  <div class="calc-title">Automated Feature Engineering: Failure Ratio</div>
+                  <div class="calc-desc">Engineered Formula: failed_ratio = failed_logins / (login_attempts + 1)</div>
+                </div>
+                <div class="calc-value-badge" id="liveFailedRatio">0.0000</div>
+              </div>
+            </div>
+
+            <!-- GROUP 3: Host Context & Reputation -->
+            <div class="form-group-section">
+              <div class="section-divider-title">
+                <span>03. Host Context &amp; Environment</span>
+                <span>بيئة الاتصال والسمعة الرقمية</span>
+              </div>
+
+              <div class="form-row-3">
+                <div class="input-block">
+                  <label for="ip_reputation_score" class="input-label">
+                    <span>IP Reputation</span>
+                    <span class="input-label-ar">سمعة الـ IP</span>
+                  </label>
+                  <input type="number" id="ip_reputation_score" name="ip_reputation_score" class="input-control"
+                         value="0.10" min="0.0" max="1.0" step="0.01" required>
+                  <p class="input-hint">
+                    Score: 0.00 (trusted) to 1.00 (blacklisted).
+                    <span class="input-hint-ar">درجة موثوقية عنوان الـ IP من 0.00 إلى 1.00.</span>
+                  </p>
+                </div>
+
+                <div class="input-block">
+                  <label for="browser_type" class="input-label">
+                    <span>Browser Client</span>
+                    <span class="input-label-ar">المتصفح</span>
+                  </label>
+                  <select id="browser_type" name="browser_type" class="input-control" required>
+                    <option value="CHROME" selected>Chrome (Code 0)</option>
+                    <option value="EDGE">Edge (Code 1)</option>
+                    <option value="FIREFOX">Firefox (Code 2)</option>
+                    <option value="SAFARI">Safari (Code 3)</option>
+                    <option value="UNKNOWN">Unknown / Script (Code 4)</option>
+                  </select>
+                  <p class="input-hint">
+                    User-Agent client identifier.
+                    <span class="input-hint-ar">نوع المتصفح أو العميل المستخدم.</span>
+                  </p>
+                </div>
+
+                <div class="input-block">
+                  <label for="unusual_time_access" class="input-label">
+                    <span>Time Anomaly</span>
+                    <span class="input-label-ar">وقت غير معتاد</span>
+                  </label>
+                  <select id="unusual_time_access" name="unusual_time_access" class="input-control" required>
+                    <option value="0" selected>0 &mdash; Standard Hours</option>
+                    <option value="1">1 &mdash; Off-Hours Anomaly</option>
+                  </select>
+                  <p class="input-hint">
+                    Temporal access deviation flag.
+                    <span class="input-hint-ar">0 = وقت عمل اعتيادي، 1 = وقت غير معتاد.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submission Actions -->
+            <div class="form-actions">
+              <button type="submit" id="btnSubmitAudit" class="btn-primary">
+                EXECUTE INTRUSION AUDIT
+              </button>
+              <button type="button" id="btnResetForm" class="btn-secondary">
+                RESET FORM
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Evaluation & Audit Report -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-header-title">Audit Evaluation Findings</h2>
+            <p class="panel-header-subtitle">Real-Time Classifier Inference &amp; Risk Metrics</p>
+          </div>
+          <span class="context-tag">EVALUATION DOCKET</span>
+        </div>
+
+        <div class="panel-body">
+
+          <!-- Initial Empty State Placeholder -->
+          <div id="resultPlaceholder" class="result-placeholder">
+            <div class="placeholder-box">
+              <div class="placeholder-title">No Audit Executed Yet</div>
+              <p class="placeholder-text">
+                Enter network session telemetry parameters on the left and click
+                "EXECUTE INTRUSION AUDIT" to run real-time inference through the trained XGBoost model.
+              </p>
+            </div>
+          </div>
+
+          <!-- Dynamic Active Audit Report Container -->
+          <div id="auditReportContainer" class="audit-report-container">
+
+            <!-- Audit Meta Header -->
+            <div class="audit-meta-header">
+              <div>
+                <span class="status-label">AUDIT REFERENCE</span>
+                <div class="audit-id" id="resAuditId">SEC-20261021-000000</div>
+              </div>
+              <div>
+                <span class="status-label">TIMESTAMP</span>
+                <div class="audit-timestamp" id="resTimestamp">2026-10-21 00:00:00 UTC</div>
+              </div>
+            </div>
+
+            <!-- Decision Classification Banner -->
+            <div id="verdictBanner" class="verdict-banner verdict-normal">
+              <div class="verdict-top-row">
+                <span class="verdict-category">INTRUSION ASSESSMENT</span>
+                <span class="verdict-tag" id="resVerdictTag">AUTHORIZED [0]</span>
+              </div>
+              <div class="verdict-title" id="resVerdictTitle">Normal Session (Authorized Traffic)</div>
+              <div class="verdict-subtitle-ar" id="resVerdictSubtitleAr">جلسة طبيعية (حركة مرور آمنة)</div>
+            </div>
+
+            <!-- Risk Probability Meter -->
+            <div class="metric-box">
+              <div class="metric-header">
+                <span class="metric-label">Assessed Intrusion Risk Probability</span>
+                <span class="metric-numeric" id="resRiskProbability">0.00%</span>
+              </div>
+              <div class="risk-progress-bar">
+                <div id="resRiskProgressFill" class="risk-progress-fill fill-normal" style="width: 0%;"></div>
+              </div>
+              <div class="metric-scale-labels">
+                <span>0% Safe</span>
+                <span id="resRiskLevel">LOW</span>
+                <span>100% Critical Threat</span>
+              </div>
+            </div>
+
+            <!-- Recommended Operational Action -->
+            <div id="actionCard" class="action-card action-normal">
+              <div class="action-title">Standard Operating Procedure Guidance</div>
+              <div class="action-text" id="resActionTextEn">Routine logging; no immediate remediation required.</div>
+              <div class="action-text-ar" id="resActionTextAr">تسجيل روتيني؛ لا يتطلب إجراء فوري.</div>
+            </div>
+
+            <!-- Model Feature Verification Table -->
+            <div class="data-table-container">
+              <div class="section-divider-title" style="margin-bottom: 0.5rem;">
+                <span>Verified Features Ingested By Model</span>
+                <span>المعلمات المدخلة في النموذج</span>
+              </div>
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th>Feature Identifier</th>
+                    <th style="text-align: right;">Ingested Value</th>
+                  </tr>
+                </thead>
+                <tbody id="resAuditTableBody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Report Export Utilities -->
+            <div class="report-tools-strip">
+              <button type="button" id="btnCopyReport" class="btn-report-tool">COPY AUDIT SUMMARY</button>
+              <button type="button" id="btnDownloadJson" class="btn-report-tool">EXPORT JSON</button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Enterprise Footer -->
+  <footer class="footer-bar">
+    <div class="footer-inner">
+      <span>Enterprise Cybersecurity Incident Response &bull; Network Intrusion Detection Pipeline</span>
+      <span class="footer-meta">MODEL: XGBClassifier (450 Trees) &bull; API v1.0.0 &bull; AUDIT STANDARD: SOC-2 TYPE II</span>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
